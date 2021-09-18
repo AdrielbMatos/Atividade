@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script>
+        function calcula_parcelas() {
+            let nome = document.getElementById('nome').value;
+            let cpf = document.getElementById('cpf').value;
+            let valorInicial = document.getElementById('valor').value;
+            let qtdParcelas = document.getElementById('qtdParcelas').value;
+            let impressao = '';
+            let total = 0.00;
+            let anterior = valorInicial / qtdParcelas;
+            let parcela = 0.00;
+            let valorRestante = valorInicial * 1.015;
+            impressao +=
+                '<div class="linha">'
+                + '<span><h1>CLIENTE: '
+                + nome.toUpperCase()
+                + '</h1></span>' +
+                '<span><h1>CPF: '
+                + cpf
+                + '</h1></span>'
+                + '</div>';
+
+            for (let i = 0; i < qtdParcelas; i++) {
+                parcela = valorRestante / (qtdParcelas - i);
+                anterior = parcela;
+                valorRestante = valorRestante - parcela;
+                total += parcela;
+                impressao +=
+                    '<div class="linha">'
+                    + '<span><h4>PARCELA ' + (i + 1) + ': '
+                    + parcela
+                    + '</h4></span>'
+                    + '</div>';
+                valorRestante = valorRestante * 1.015;
+            }
+            let totalJuros = total - valorInicial;
+            impressao +=
+                '<div class="linha">'
+                + '<span><h2><b>'
+                + 'TOTAL: ' + total
+                + '</b></h2></span>'
+                + '<span><h2><b>TOTAL DE JUROS:'
+                + totalJuros
+                + '</b></h2></span>';
+
+            document.getElementById('parcelas').innerHTML = impressao;
+        }
+    </script>
+</head>
+<style>
+    .linha {
+        width: 100%;
+        margin-bottom: 5px;
+    }
+</style>
+<body>
+<div>
+    <div class="linha">
+        <label for="cpf">CPF</label>
+        <input name="cpf" id="cpf" type="text">
+        <label for="nome">Nome</label>
+        <input name="nome" id="nome" type="text">
+    </div>
+    <div class="linha">
+        <label for="valor">Valor do empréstimo</label>
+        <input name="valor" id="valor" type="number">
+        <label for="qtdParcelas">Quantidade de Parcelas</label>
+        <input name="qtdParcelas" id="qtdParcelas" type="number">
+    </div>
+    <div class="linha">
+        <button type="button" onclick="calcula_parcelas()">CALCULAR TOTAIS</button>
+    </div>
+
+    <div id="parcelas" class="linha">
+
+    </div>
+</div>
+</body>
+</html>
